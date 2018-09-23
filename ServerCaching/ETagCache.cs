@@ -31,8 +31,7 @@ namespace ServerCaching
                 // If there was a cached item then deserialise this 
                 if (!string.IsNullOrEmpty(cachedObjectJson))
                 {
-                    T cachedObject = JsonConvert.DeserializeObject<T>(cachedObjectJson);
-                    return cachedObject;
+                    return JsonConvert.DeserializeObject<T>(cachedObjectJson);
                 }
             }
 
@@ -66,11 +65,7 @@ namespace ServerCaching
 
         private string GetRequestedETag()
         {
-            if (_httpContext.Request.Headers.ContainsKey("If-None-Match"))
-            {
-                return _httpContext.Request.Headers["If-None-Match"].First();
-            }
-            return "";
+            return _httpContext.Request.Headers.ContainsKey("If-None-Match") ? _httpContext.Request.Headers["If-None-Match"].First() : string.Empty;
         }
 
         private bool IsCacheable(dynamic objectToCache)
